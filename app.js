@@ -4,26 +4,18 @@ var http = require('http')
   , moment = require('moment')
   , _ = require('lodash')
   , Q = require('q')
-  , statParser = require('./statisticsParser');
+  , statParser = require('./statisticsParser')
+  , configFile = __dirname + '/config.json';
 
-var requestInterval = 1; // defined in minutes
+var configData = fs.readFileSync(configFile, 'utf8');
 
-var baseURL = 'http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=';
+var config = JSON.parse(configData);
 
-var stations = [
-  baseURL + 6003,
-  baseURL + 6004,
-  baseURL + 6005,
-  baseURL + 6006,
-  baseURL + 6007,
-  baseURL + 6008,
-  baseURL + 6009,
-  baseURL + 6010,
-  baseURL + 6011,
-  baseURL + 6013,
-  baseURL + 6014,
-  baseURL + 6015,
-];
+var requestInterval = config["checkInterval"]; // defined in minutes
+console.log('initializing request interval to :' + requestInterval);
+
+var stations = config["stations"];
+console.log('initializing stations urls to :\n' + stations);
 
 var isTaskRunning = false;
 setInterval(function () {
@@ -39,7 +31,7 @@ setInterval(function () {
         isTaskRunning = false;
       });
   }
-}, requestInterval * 30 * 1000)
+}, requestInterval * 60 * 1000)
 
 
 function ProcessAllEndpoints(endpoints, n, d) {
@@ -52,8 +44,8 @@ function ProcessAllEndpoints(endpoints, n, d) {
     d.resolve();
   } else {
     RequestStats(endpoints[n]).then(function (data) {
-      console.log('god data from ' + endpoints[n]);
-      console.dir(data);
+//      console.log('god data from ' + endpoints[n]);
+//      console.dir(data);
 
       // calling next endpoint whenever previos one is processed
       ProcessAllEndpoints(endpoints, n + 1, d);
@@ -70,7 +62,7 @@ function RequestStats(url) {
     req.pipe(bl(function (err, result) {
       if (err) console.log(err);
 
-      console.log('got response from: ' + url);
+//      console.log('got response from: ' + url);
 
       ProcessRequestResult(result)
         .then(function (data) {
@@ -89,7 +81,7 @@ function ProcessRequestResult(result) {
 
   statParser.parse(result).then(function (data) {
     var currentTime = moment().subtract('hours', 1).format('YYYY-MM-DD HH:00:00').toString();
-    console.log(currentTime);
+//    console.log(currentTime);
     var currentStat = _.first(data, function (obj) {
       return obj.date === currentTime;
     });

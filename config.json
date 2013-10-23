@@ -1,0 +1,17 @@
+{
+  "checkInterval" : 1,
+  "stations" : [
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6003",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6004",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6005",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6006",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6007",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6008",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6009",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6010",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6011",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6013",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6014",
+    "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6015"
+  ]
+}
