@@ -1,0 +1,17 @@
+{
+  "name": "PollutionInfoScrapper",
+  "version": "0.0.0",
+  "description": "Malopolska region air pollution information scrapper",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Pollution",
+    "Krakow",
+    "Malopolska",
+    "API"
+  ],
+  "author": "Nazar Gargol",
+  "license": "MIT"
+}
