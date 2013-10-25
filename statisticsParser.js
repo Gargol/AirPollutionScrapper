@@ -1,6 +1,5 @@
 var PollutionStats = PollutionStats || {};
 
-
 var _ = require('lodash')
   , Q = require('q')
   , parseString = require('xml2js').parseString;

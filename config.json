@@ -1,5 +1,5 @@
 {
-  "checkInterval" : 1,
+  "checkInterval" : 0.5,
   "stations" : [
     "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6003",
     "http://www.malopolska.pl/_layouts/WrotaMalopolski/XmlData.aspx?data=2&id=6004",

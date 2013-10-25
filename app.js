@@ -4,18 +4,20 @@ var http = require('http')
   , moment = require('moment')
   , _ = require('lodash')
   , Q = require('q')
+  , logger = require('./logger')
   , statParser = require('./statisticsParser')
-  , configFile = __dirname + '/config.json';
+  , configFile = __dirname + '/config.json'
+  , repo = require('./statsrepository');
 
 var configData = fs.readFileSync(configFile, 'utf8');
 
 var config = JSON.parse(configData);
 
 var requestInterval = config["checkInterval"]; // defined in minutes
-console.log('initializing request interval to :' + requestInterval);
+logger.info('initializing request interval to :' + requestInterval);
 
 var stations = config["stations"];
-console.log('initializing stations urls to :\n' + stations);
+logger.info('initializing stations urls to :\n' + stations);
 
 var isTaskRunning = false;
 setInterval(function () {
@@ -24,10 +26,10 @@ setInterval(function () {
     return;
   } else {
     isTaskRunning = true;
-    console.log('starting request execution at: ' + new Date());
+    logger.info('starting request execution at: ' + moment());
     ProcessAllEndpoints(stations)
       .then(function () {
-        console.log('finished reques execution at: ' + new Date());
+        logger.info('finished reques execution at: ' + moment());
         isTaskRunning = false;
       });
   }
@@ -44,11 +46,21 @@ function ProcessAllEndpoints(endpoints, n, d) {
     d.resolve();
   } else {
     RequestStats(endpoints[n]).then(function (data) {
-//      console.log('god data from ' + endpoints[n]);
-//      console.dir(data);
+      logger.info('processing data form: ' + endpoints[n]);
+      if(data){
+        logger.info(data);
 
-      // calling next endpoint whenever previos one is processed
-      ProcessAllEndpoints(endpoints, n + 1, d);
+        repo.insert(data, 'pollution_stats')
+          .then(function(){
+            // calling next endpoint whenever previos one is processed
+            ProcessAllEndpoints(endpoints, n + 1, d);
+          });
+      }else{
+        logger.error('no data received from endpoint');
+        ProcessAllEndpoints(endpoints, n + 1, d);
+      }
+
+
     });
 
     return d.promise;
@@ -62,7 +74,7 @@ function RequestStats(url) {
     req.pipe(bl(function (err, result) {
       if (err) console.log(err);
 
-//      console.log('got response from: ' + url);
+      logger.info('got response from: ' + url);
 
       ProcessRequestResult(result)
         .then(function (data) {
@@ -81,7 +93,7 @@ function ProcessRequestResult(result) {
 
   statParser.parse(result).then(function (data) {
     var currentTime = moment().subtract('hours', 1).format('YYYY-MM-DD HH:00:00').toString();
-//    console.log(currentTime);
+    logger.info(currentTime);
     var currentStat = _.first(data, function (obj) {
       return obj.date === currentTime;
     });
