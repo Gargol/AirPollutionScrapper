@@ -11,7 +11,7 @@ PollutionStats.StatsRepository = (function () {
     , insert = function (data, collectionName) {
       var d = Q.defer();
 
-      client.connect(connectionURL, function (err, db) {
+      client.connect(connectionURL, {}, function (err, db) {
         if (err) logger.error(err);
 
         var collection = db.collection(collectionName);
