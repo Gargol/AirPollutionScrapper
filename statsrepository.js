@@ -12,24 +12,54 @@ PollutionStats.StatsRepository = (function () {
       var d = Q.defer();
 
       client.connect(connectionURL, {}, function (err, db) {
-        if (err) logger.error(err);
+        if (err) {
+          logger.error(err);
+          d.reject(err);
+        } else {
+          var collection = db.collection(collectionName);
 
+          collection.insert(data, function (err, inserted) {
+            if (err) {
+              logger.error(err);
+              d.reject(err);
+            }
+
+            if (inserted) logger.info('inserted new record into database');
+
+            d.resolve(inserted);
+          });
+        }
+
+
+      });
+
+      return d.promise;
+    }
+    , get = function (id, collectionName){
+      var d  = Q.defer();
+
+      client.connect(connectionURL,{}, function(err, db){
+        if(err){
+         logger.error(err);
+         d.reject(err);
+        }
         var collection = db.collection(collectionName);
 
-        collection.insert(data, function (err, inserted) {
-          if (err) logger.error(err);
-
-          if (inserted) logger.info('inserted new record into database');
-
-          d.resolve(inserted);
-        });
+        collection.findOne({"_id":id}, function(err, data){
+          if(err){
+            logger.error(err);
+            d.reject(err);
+          }
+          d.resolve(data);
+        })
       });
 
       return d.promise;
     }
     ;
   return{
-    insert: insert
+    insert: insert,
+    get: get
   }
 }());
 
