@@ -6,7 +6,37 @@ var _ = require('lodash')
 
 PollutionStats.WrotaMalopolskiParser = (function () {
   var
-    parse = function (XMLString) {
+    // taken from here http://monitoring.krakow.pios.gov.pl/iseo/
+    norms ={
+      "SO2": 350,
+      "NO": 40,
+      "NO2": 200,
+      "CO":  10000,
+      "PM2.5":25,
+      "O3":120,
+      "C6H6": 5,
+      "PM10": 50
+    }
+  /**
+   * adds norm parameters and allowed
+   * pollution percent calculations to pollutant object
+   * @param pollutant
+   */
+    , getDecoratedPollutant = function(pollutant){
+      var decorated = {
+          "pollutant": pollutant.Pollutant[0],
+          "concentration": pollutant.Concentration[0],
+          "value": parseFloat(pollutant.Value[0])
+        };
+
+      if(norms.hasOwnProperty(decorated.pollutant)){
+        decorated.norm = norms[decorated.pollutant];
+        decorated.normPercent = Math.round((decorated.value / decorated.norm ) * 100 * 100)/100;
+      }
+
+      return decorated;
+    }
+    , parse = function (XMLString) {
       var d = Q.defer();
 
       parseString(XMLString, function (err, parsedJSON) {
@@ -24,13 +54,8 @@ PollutionStats.WrotaMalopolskiParser = (function () {
           pollutionStat.date = obj[0].Date[0];
 
           _.each(obj, function (pollutant) {
-            pollutionStat.pollutants.push(
-              {
-                "pollutant": pollutant.Pollutant[0],
-                "concentration": pollutant.Concentration[0],
-                "value": pollutant.Value[0]
-              }
-            );
+            var decoratedPollutant = getDecoratedPollutant(pollutant);
+            pollutionStat.pollutants.push(decoratedPollutant);
           });
 
           pollutionByHour.push(pollutionStat);
