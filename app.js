@@ -27,7 +27,7 @@ repo.init({"connectionUrl": config["connectionString"]})
 var isTaskRunning = false;
 setInterval(function () {
   if (isTaskRunning) {
-    console.log('Task was not run because previous task has not finished execution');
+    logger.info('Task was not run because previous task has not finished execution');
     return;
   } else {
     isTaskRunning = true;
@@ -88,7 +88,7 @@ function RequestStats(url) {
   var d = Q.defer();
   http.get(url, function (req) {
     req.pipe(bl(function (err, result) {
-      if (err) console.log(err);
+      if (err) logger.log(err);
 
       logger.info('got response from: ' + url);
 
