@@ -60,7 +60,8 @@ function ProcessAllEndpoints(endpoints, n, d) {
 
         repo.get(data["_id"], 'pollution_stats').then(function(repoStat){
           if(!repoStat){
-            logger.info('inserting new stats' + data);
+            logger.info('inserting new stats: ' );
+            logger.info(data);
             repo.insert(data, 'pollution_stats')
               .then(function(){
                 // calling next endpoint whenever previos one is processed
