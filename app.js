@@ -21,6 +21,8 @@ stations.forEach(function(station){
   logger.info('initializing station url to :\n' + station.url + ", key: " + station.key);
 });
 
+repo.init({"connectionUrl": config["connectionString"]})
+
 
 var isTaskRunning = false;
 setInterval(function () {

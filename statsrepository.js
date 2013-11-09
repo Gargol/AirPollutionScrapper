@@ -7,7 +7,10 @@ var MongoClient = require('mongodb').MongoClient
 PollutionStats.StatsRepository = (function () {
   var
     client = MongoClient
-    , connectionURL = 'mongodb://localhost/pollution_stats'
+    , connectionURL
+    , init = function(config){
+      connectionURL = config.connectionUrl;
+    }
     , insert = function (data, collectionName) {
       var d = Q.defer();
 
@@ -59,7 +62,8 @@ PollutionStats.StatsRepository = (function () {
     ;
   return{
     insert: insert,
-    get: get
+    get: get,
+    init: init
   }
 }());
 
