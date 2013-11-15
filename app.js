@@ -14,7 +14,7 @@ var configData = fs.readFileSync(configFile, 'utf8');
 var config = JSON.parse(configData);
 
 var requestInterval = config["checkInterval"]; // defined in minutes
-logger.info('initializing request interval to :' + requestInterval);
+logger.info('initializing request interval to :' + requestInterval + ' minutes');
 
 var stations = config["stations"];
 stations.forEach(function(station){
