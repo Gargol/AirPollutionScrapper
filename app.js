@@ -72,6 +72,7 @@ function ProcessAllEndpoints(endpoints, n, d) {
           data["_id"] = endpoints[n].key +'-'+ data.date;
           data["station_id"] = endpoints[n].key;
 
+          logger.info('checking record availability in database for key:' + data["_id"]);
           repo.get(data["_id"], 'pollution_stats').then(function(repoStat){
             if(!repoStat){
               logger.info('inserting new stats: ' );
