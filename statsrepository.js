@@ -43,7 +43,7 @@ PollutionStats.StatsRepository = (function () {
 
       client.connect(connectionURL,{}, function(err, db){
         if(err){
-         logger.error(err);
+         logger.error('error while connecting to the database: ' + err);
          d.reject(err);
         }
         var collection = db.collection(collectionName);
