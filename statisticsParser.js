@@ -58,6 +58,8 @@ PollutionStats.WrotaMalopolskiParser = (function () {
             pollutionStat.pollutants.push(decoratedPollutant);
           });
 
+          pollutionStat.pollutants = _.sortBy(pollutionStat.pollutants, 'pollutant');
+
           pollutionByHour.push(pollutionStat);
         });
 
