@@ -66,7 +66,8 @@ function ProcessAllEndpoints(endpoints, n, d) {
     var stationURL = endpoints[n].url;
     RequestStats(stationURL)
       .then(function (data) {
-        logger.info('processing data from: ' + stationURL);
+        logger.info('processing data from: ' + stationURL + ' ; with data:');
+        logger.info(data);
         if(data){
           data["_id"] = endpoints[n].key +'-'+ data.date;
           data["station_id"] = endpoints[n].key;
