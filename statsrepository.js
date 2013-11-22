@@ -41,6 +41,7 @@ PollutionStats.StatsRepository = (function () {
     , get = function (id, collectionName){
       var d  = Q.defer();
 
+      logger.info('connectiong to the mongo database at url: ' + connectionURL);
       client.connect(connectionURL,{}, function(err, db){
         if(err){
          logger.error('error while connecting to the database: ' + err);

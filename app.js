@@ -22,7 +22,8 @@ stations.forEach(function(station){
   logger.info('initializing station url to :\n' + station.url + ", key: " + station.key);
 });
 
-repo.init({"connectionUrl": config["connectionString"]})
+logger.info('initializing connectino url to: ' + config["connectionString"]);
+repo.init({"connectionUrl": config["connectionString"]});
 
 var isTaskRunning = false;
 
