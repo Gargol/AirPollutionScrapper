@@ -50,7 +50,7 @@ PollutionStats.StatsRepository = (function () {
 
         collection.findOne({"_id":id}, function(err, data){
           if(err){
-            logger.error(err);
+            logger.error('error while finding record: '+err);
             d.reject(err);
           }
           d.resolve(data);
