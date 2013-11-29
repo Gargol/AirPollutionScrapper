@@ -26,14 +26,12 @@ PollutionStats.StatsRepository = (function () {
               logger.error(err);
               d.reject(err);
             }
-
+            db.close();
             if (inserted) logger.info('inserted new record into database');
 
             d.resolve(inserted);
           });
         }
-
-
       });
 
       return d.promise;
@@ -44,6 +42,7 @@ PollutionStats.StatsRepository = (function () {
       logger.info('connectiong to the mongo database at url: ' + connectionURL);
       client.connect(connectionURL,{}, function(err, db){
         if(err){
+         db.close();
          logger.error('error while connecting to the database: ' + err);
          d.reject(err);
         }
@@ -54,6 +53,7 @@ PollutionStats.StatsRepository = (function () {
             logger.error('error while finding record: '+err);
             d.reject(err);
           }
+          db.close();
           d.resolve(data);
         })
       });
